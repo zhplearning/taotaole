@@ -1,10 +1,12 @@
 package com.zhp.taotaole.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * ClassName: User
@@ -38,6 +40,10 @@ public class User {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @OneToMany(mappedBy = "seller")
+    @JsonManagedReference
+    private List<Product> products;
 
     @Column(name = "create_time",updatable = false)
     private LocalDateTime createTime;

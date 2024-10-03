@@ -22,10 +22,10 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private final PasswordEncoder passwordEncoder;
+    //private final PasswordEncoder passwordEncoder;
     @Autowired
     public UserRepository userRepository;
-    public UserService() {
+   /* public UserService() {
         this.passwordEncoder = new BCryptPasswordEncoder(); // 实例化密码加密器
     }
 
@@ -41,7 +41,7 @@ public class UserService {
     public boolean checkPassword(String rawPassword, String encodedPassword) {
         // 验证密码是否匹配
         return passwordEncoder.matches(rawPassword, encodedPassword);
-    }
+    }*/
 
     public Optional<User> findByUsername(String username){
         return userRepository.findByUsername(username);
