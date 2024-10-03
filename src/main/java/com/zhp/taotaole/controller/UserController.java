@@ -35,6 +35,15 @@ public class UserController {
         return userService.saveUser(user);
     }
 
+//    @PostMapping("/login")
+//    public String login(@RequestBody User user) {
+//        User foundUser = userService.findByEmail(user.getEmail());
+//        if (foundUser != null && foundUser.getPassword().equals(user.getPassword())) {
+//            return "Login successful";
+//        }
+//        return "Invalid credentials";
+//    }
+
     @GetMapping("/{username}")
     public Optional<User> getUserByUsername(@PathVariable String username) {
         return userService.findByUsername(username);

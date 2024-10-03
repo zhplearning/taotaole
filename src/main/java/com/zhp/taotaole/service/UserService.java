@@ -55,5 +55,18 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User findByEmail(String email){
+        return userRepository.findByEmail(email);
+    }
+
+    public boolean validateUser(String email, String password) {
+        // 假设你使用了 UserRepository 从数据库中查询用户信息
+        User user = userRepository.findByEmail(email);
+        if (user != null && user.getPassword().equals(password)) {
+            return true;
+        }
+        return false;
+    }
+
 
 }
