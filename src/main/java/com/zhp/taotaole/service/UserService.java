@@ -3,6 +3,7 @@ package com.zhp.taotaole.service;
 import com.zhp.taotaole.entity.User;
 import com.zhp.taotaole.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,8 @@ public class UserService {
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }*/
 
-    public Optional<User> findByUsername(String username){
+
+    public User getUserByUsername(String username){
         return userRepository.findByUsername(username);
     }
 
@@ -54,7 +56,7 @@ public class UserService {
     public List<User> findAll(){
         return userRepository.findAll();
     }
-
+    @Cacheable(value = "users",key = "#email")
     public User findByEmail(String email){
         return userRepository.findByEmail(email);
     }

@@ -44,9 +44,13 @@ public class ProductService {
         }
         System.out.println("布隆过滤器初始化完成，共加载商品ID数量：" + allProductIds.size());
     }*/
+    public void updateProduct(Long ProductId,Product newProduct){
+        // 1. 更新数据库中的信息
+        productRepository.save(newProduct);
 
-    public Optional<Product> getByName(String name){
-        return productRepository.getByName(name);
+        // 2. 同步更新或删除缓存
+        String redisKey = "userCacheKey:" + ProductId;
+        redisTemplate.delete(redisKey);
     }
 
     public Product addProduct(Product product){
@@ -57,9 +61,30 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Optional<Product> findByName(String name){
-        return productRepository.getByName(name);
+    public Product findByName(String name){
+        String redisKey="product:"+name;
+        //从Redis中获取商品
+        Product product=(Product)redisTemplate.opsForValue().get(redisKey);
+        // 检查缓存中是否存在空值或商品
+        if(product!=null){
+            System.out.println("从redis缓存中获取商品："+name);
+            return product;
+        }
+        //Redis缓存中不存在商品的信息，从数据库中查询商品信息
+        product=productRepository.getByName(name);
+
+        //将查询到的商品信息缓存到Redis
+        long randomExpire=10+new Random().nextInt(5);  //随机过期时间，10到15分钟
+        if(product!=null){
+            redisTemplate.opsForValue().set(redisKey,product,randomExpire,TimeUnit.MINUTES);
+        }else{
+            //如果数据库中没有商品，比卖你缓存穿透，将空值缓存
+            redisTemplate.opsForValue().set(redisKey,"",5,TimeUnit.MINUTES);
+        }
+
+        return product;
     }
+
 
 
     // 商品查询服务

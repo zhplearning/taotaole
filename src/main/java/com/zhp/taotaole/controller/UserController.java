@@ -3,6 +3,7 @@ package com.zhp.taotaole.controller;
 import com.zhp.taotaole.entity.User;
 import com.zhp.taotaole.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,14 +45,20 @@ public class UserController {
 //        return "Invalid credentials";
 //    }
 
+
     @GetMapping("/{username}")
-    public Optional<User> getUserByUsername(@PathVariable String username) {
-        return userService.findByUsername(username);
+    public User getUserByUsername(@PathVariable String username) {
+        return userService.getUserByUsername(username);
     }
 
     @GetMapping("/")
     public List<User> getAllUsers(){
         return userService.findAll();
+    }
+
+    @GetMapping("/findByEmail/{email}")
+    public User findByEmail(@PathVariable String email){
+        return userService.findByEmail(email);
     }
 
 

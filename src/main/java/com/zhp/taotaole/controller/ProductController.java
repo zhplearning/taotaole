@@ -3,6 +3,7 @@ package com.zhp.taotaole.controller;
 import com.zhp.taotaole.entity.Product;
 import com.zhp.taotaole.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,12 +35,21 @@ public class ProductController {
     }
 
     @GetMapping("/{name}")
-    public Optional<Product> find(@PathVariable String name){
+    public Product find(@PathVariable String name){
         return productService.findByName(name);
     }
 
     @GetMapping("/getProById/{productId}")
     public Product getProductById(@PathVariable Long productId){
         return productService.getProductById(productId);
+    }
+
+    @PutMapping("/update/{productId}")
+    public ResponseEntity<String> updateProduct(@PathVariable Long productId, @RequestBody Product newData) {
+        // 调用服务层，更新用户信息
+        productService.updateProduct(productId, newData);
+
+        // 返回响应
+        return ResponseEntity.ok("Product updated and cache invalidated.");
     }
 }
