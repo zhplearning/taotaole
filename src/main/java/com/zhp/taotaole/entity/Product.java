@@ -1,6 +1,7 @@
 package com.zhp.taotaole.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * ClassName: Product
@@ -33,10 +35,16 @@ public class Product {
     private BigDecimal price;
     private Long stock;
 
+    //商品与卖家的关系，多对一
     @ManyToOne
     @JoinColumn(name = "seller_id",nullable = false)
     @JsonBackReference
     private User seller;
+
+    //商品与订单的关系，一对多
+    @OneToMany(mappedBy = "product")
+    @JsonManagedReference("productReference")
+    private List<Order> orders;
 
 
     @Enumerated(EnumType.STRING)

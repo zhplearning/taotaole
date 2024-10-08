@@ -41,9 +41,21 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    //卖家与商品的关系，一对多
     @OneToMany(mappedBy = "seller")
     @JsonManagedReference
     private List<Product> products;
+
+    //卖家与订单的关系，一对多
+    @OneToMany(mappedBy = "seller")
+    @JsonManagedReference("sellerReference")
+    private List<Order> sellerOrders;
+
+    //买家与订单的关系，一对多
+    @OneToMany(mappedBy = "buyer")
+    @JsonManagedReference("buyerReference")
+    private List<Order> buyerOrders;
+
 
     @Column(name = "create_time",updatable = false)
     private LocalDateTime createTime;
