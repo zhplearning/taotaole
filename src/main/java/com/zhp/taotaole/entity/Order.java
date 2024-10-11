@@ -30,16 +30,19 @@ public class Order {
     //订单与商品的关系，多对一
     @ManyToOne
     @JsonBackReference("productReference")
+    @JoinColumn(name="product_id")
     private Product product;
 
     //订单与买家的关系，多对一
     @ManyToOne
     @JsonBackReference("buyerReference")
+    @JoinColumn(name="buyer_id")
     private User buyer;
 
     //订单与卖家的关系，多对一
     @ManyToOne
     @JsonBackReference("sellerReference")
+    @JoinColumn(name="seller_id")
     private User seller;
 
     @Column(nullable = false)
@@ -62,8 +65,5 @@ public class Order {
     public enum Status{
         pending,completed,cancelled;
     }
-
-
-
 
 }

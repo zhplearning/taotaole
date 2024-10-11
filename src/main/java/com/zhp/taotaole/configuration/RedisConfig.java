@@ -28,7 +28,7 @@ public class RedisConfig {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
 
-        // 配置 Jackson2JsonRedisSerializer，并指定反序列化的目标类型
+        // 配置 Jackson2JsonRedisSerializer
         Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper mapper = new ObjectMapper();
 
@@ -36,16 +36,16 @@ public class RedisConfig {
         mapper.registerModule(new JavaTimeModule());
         mapper.registerModule(new ParameterNamesModule());
 
-        // 使用安全的多态类型验证器替代 enableDefaultTyping
+        // 使用安全的多态类型验证器，确保对象类型的安全性
         BasicPolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder()
-                .allowIfBaseType(Object.class) // 允许 Object 类型作为基础类型
+                .allowIfBaseType(Object.class) // 允许 Object 类型作为基础类型，但要谨慎使用
                 .build();
-        mapper.activateDefaultTyping(ptv, ObjectMapper.DefaultTyping.NON_FINAL); // 激活安全的默认类型
+        mapper.activateDefaultTyping(ptv, ObjectMapper.DefaultTyping.NON_FINAL);
 
-        // 配置序列化器
+        // 设置 ObjectMapper 给 Jackson2JsonRedisSerializer
         serializer.setObjectMapper(mapper);
 
-        // 设置键、值的序列化器
+        // 设置键和值的序列化器
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(serializer);
         template.setHashKeySerializer(new StringRedisSerializer());

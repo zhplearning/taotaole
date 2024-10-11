@@ -3,8 +3,6 @@ package com.zhp.taotaole.repository;
 import com.zhp.taotaole.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
 /**
  * ClassName: OrderRepository
  * Package: com.zhp.taotaole.repository
@@ -16,4 +14,5 @@ import java.util.List;
  */
 public interface OrderRepository extends JpaRepository<Order,Long> {
     Order getOrderByOrderId(Long productId);
+    //void createOrder(OrderRequest orderRequest);
 }

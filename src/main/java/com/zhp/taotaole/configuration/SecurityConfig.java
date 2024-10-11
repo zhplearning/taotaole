@@ -29,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/public/**").permitAll()
                 // 保护需要认证的 API
                 .antMatchers("/api/**").authenticated()
+                .antMatchers("/api/orders/create").hasAuthority("CREATE_ORDER")
                 .anyRequest().authenticated()// 其他请求需要认证
                 .and()
                 .formLogin();   //启用表单登录
