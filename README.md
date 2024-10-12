@@ -10,4 +10,13 @@
 
 ##系统要求
   -jdk17
+
+##项目架构
+  -技术栈
+    .前端
+    .后端：springboot、mybatis-plus、
+    .数据库：mysql8.0
+    .中间件：Redis缓存、RabbitMQ消息队列
+    .消息推送
+    .云存储
   
